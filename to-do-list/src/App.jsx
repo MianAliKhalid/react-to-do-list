@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { FaEdit, FaTrash, FaCheck, FaUndo } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -23,11 +26,15 @@ function App() {
         );
         setTasks(updatedTasks);
         setEditIndex(null);
+        toast.success("Task updated successfully!");
       } else {
         setTasks([...tasks, newTask]);
+        toast.success("Task added successfully!");
       }
       setInputValue("");
       setPriority("Low");
+    } else {
+      toast.error("Task cannot be empty!");
     }
   };
 
@@ -40,6 +47,7 @@ function App() {
   const handleDeleteTask = (index) => {
     const newTasks = tasks.filter((_, i) => i !== index);
     setTasks(newTasks);
+    toast.success("Task deleted successfully!");
   };
 
   const handleToggleComplete = (index) => {
@@ -47,6 +55,7 @@ function App() {
       i === index ? { ...task, completed: !task.completed } : task
     );
     setTasks(updatedTasks);
+    toast.info(`Task marked as ${tasks[index].completed ? "incomplete" : "complete"}!`);
   };
 
   const totalTasks = tasks.length;
@@ -98,7 +107,7 @@ function App() {
               {tasks.map((task, index) => (
                 <li
                   key={index}
-                  className={`flex justify-between items-center p-3 mb-2 rounded-lg shadow-sm ${task.completed ? "bg-green-700" : "bg-gray-700"}`}
+                  className={`flex justify-between items-center p-3 mb-2 rounded-lg shadow-sm ${task.completed ? "bg-green-700" : "bg-gray-700"} transition duration-300 ease-in-out transform hover:scale-105`}
                 >
                   <div>
                     <span className="font-bold">{index + 1}. </span>
@@ -107,24 +116,24 @@ function App() {
                       {task.priority}
                     </span>
                   </div>
-                  <div>
+                  <div className="flex space-x-2">
                     <button
-                      className="bg-green-500 text-white p-1 rounded-lg mr-2 hover:bg-green-600 transition duration-300"
+                      className="bg-green-500 text-white p-1 rounded-lg hover:bg-green-600 transition duration-300"
                       onClick={() => handleToggleComplete(index)}
                     >
-                      {task.completed ? "Undo" : "Complete"}
+                      {task.completed ? <FaUndo /> : <FaCheck />}
                     </button>
                     <button
-                      className="bg-yellow-500 text-white p-1 rounded-lg mr-2 hover:bg-yellow-600 transition duration-300"
+                      className="bg-yellow-500 text-white p-1 rounded-lg hover:bg-yellow-600 transition duration-300"
                       onClick={() => handleEditTask(index)}
                     >
-                      Edit
+                      <FaEdit />
                     </button>
                     <button
                       className="bg-red-500 text-white p-1 rounded-lg hover:bg-red-600 transition duration-300"
                       onClick={() => handleDeleteTask(index)}
                     >
-                      Delete
+                      <FaTrash />
                     </button>
                   </div>
                 </li>
@@ -133,6 +142,7 @@ function App() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }
