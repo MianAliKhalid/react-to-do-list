@@ -24,7 +24,7 @@ Welcome to the To-Do List Application! This project is a modern, responsive, and
 Here are some screenshots of the application:
 
 ### Home Page
-![Home Page](screenshots/home-page.png)
+![Home Page](to-do-list\screenshots\home-page.png)
 
 
 
